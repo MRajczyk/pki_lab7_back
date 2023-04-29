@@ -3,10 +3,11 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import routes from './routes.js'
-import { config } from '../config.js';
-import { UserModel } from "./models/user.js";
 import { initializeUser } from './seed/user-seeder.js'
 import { initializeData } from './seed/data-seeder.js'
+
+const URI_MONGO = process.env.URI_MONGO;
+const PORT_LISTEN = process.env.PORT_LISTEN;
 
 // Initialize app 
 const app = express(); 
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
 }); 
 
 // Connect to MongoDB 
-mongoose.connect(config.URI_MONGO, { 
+mongoose.connect(URI_MONGO, {
   useNewUrlParser: true
 }).catch(err => console.log('Error: Could not connect to MongoDB.', err)); 
 
@@ -44,6 +45,6 @@ mongoose.connection.on('error', (err) => {
 // Routes app 
 app.use('/', routes); 
 // Start app 
-app.listen(config.PORT_LISTEN, () => { 
-  console.log('Listening at port ' + config.PORT_LISTEN);
+app.listen(PORT_LISTEN, () => {
+  console.log('Listening at port ' + PORT_LISTEN);
 })

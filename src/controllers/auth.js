@@ -1,7 +1,8 @@
 import { UserModel } from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { config } from "../../config.js";
+
+const TOKEN_JWT = process.env.TOKEN_SECRET_JWT;
 
 // Validate email address
 export async function validateEmailAccessibility(email) {
@@ -20,7 +21,7 @@ export const generateTokens = (req, user) => {
             rol: user.roles,
             type: "ACCESS_TOKEN",
         },
-        config.TOKEN_SECRET_JWT,
+        TOKEN_JWT,
         {
             expiresIn: "5000",
         }
@@ -32,7 +33,7 @@ export const generateTokens = (req, user) => {
             rol: user.roles,
             type: "REFRESH_TOKEN",
         },
-        config.TOKEN_SECRET_JWT,
+        TOKEN_JWT,
         {
             expiresIn: "1h",
         }
@@ -107,7 +108,7 @@ export const accessTokenVerify = (req, res, next) => {
             error: "Token is not complete",
         });
     }
-    jwt.verify(AUTHORIZATION_TOKEN[1], config.TOKEN_SECRET_JWT, function (err) {
+    jwt.verify(AUTHORIZATION_TOKEN[1], TOKEN_JWT, function (err) {
         if (err) {
             return res.status(401).send({
                 error: "Token is invalid",
@@ -132,7 +133,7 @@ export const refreshTokenVerify = (req, res, next) => {
             error: "Token is not complete",
         });
     }
-    jwt.verify(REFRESH_TOKEN[1], config.TOKEN_SECRET_JWT, async function (err, payload) {
+    jwt.verify(REFRESH_TOKEN[1], TOKEN_JWT, async function (err, payload) {
         if (err) {
             return res.status(403).send({
                 error: "Token refresh is invalid",
