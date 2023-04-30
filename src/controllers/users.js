@@ -25,7 +25,6 @@ export const verifyUser = async (req, res, next) => {
     console.log(reqUserId)
     const data = await UserModel.findOneAndUpdate({_id: reqUserId}, {accepted: true});
     if (!data) {
-        console.log('buuu')
         res.status(401).send({message: "Test"});
         next();
     } else {

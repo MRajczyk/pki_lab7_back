@@ -80,10 +80,14 @@ export const createUser = async (req, res, next) => {
 export const loginUser = async (req, res, next) => {
     const {email, password} = req.body;
     const userDoc = await UserModel.findOne({email});
+    console.log(userDoc)
+    const ctr = userDoc.counter + 1;
     try {
         const passwOk = bcrypt.compareSync(password, userDoc.password);
         if(passwOk) {
-            res.json(Object.assign(generateTokens(req, userDoc), { 'roles': userDoc.roles }));
+            await UserModel.findOneAndUpdate({email}, {lastVisit: new Date()});
+            await UserModel.findOneAndUpdate({email}, {counter: ctr});
+            res.json(Object.assign(generateTokens(req, userDoc), { 'roles': userDoc.roles, 'counter': userDoc.counter + 1, 'lastVisit': userDoc.lastVisit }));
         } 
         else {
             res.status(401).json('Wrong credentials!');

@@ -8,7 +8,6 @@ import { initializeData } from './seed/data-seeder.js'
 
 const URI_MONGO = process.env.URI_MONGO;
 const PORT_LISTEN = process.env.PORT_LISTEN;
-
 // Initialize app 
 const app = express(); 
 

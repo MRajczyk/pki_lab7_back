@@ -27,7 +27,7 @@ const UserSchema = new Schema({
     trim: true, 
     default: ['USER']
   },
-  registerDate: {
+  joined: {
     type: Date,
     trim: true,
     default: new Date()
@@ -41,6 +41,16 @@ const UserSchema = new Schema({
     type: Date,
     trim: true,
     default: () => new Date(Date.now() + 1*60*1000)
+  },
+  lastVisit: {
+    type: Date,
+    trim: true,
+    default: new Date()
+  },
+  counter: {
+    type: Number,
+    trim: true,
+    default: 1
   },
 },
 { 
