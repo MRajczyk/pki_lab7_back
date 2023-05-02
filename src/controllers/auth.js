@@ -83,6 +83,7 @@ export const loginUser = async (req, res, next) => {
     console.log(userDoc)
     if(!userDoc) {
         res.status(401).json('Wrong credentials!');
+        return;
     }
     const ctr = userDoc.counter + 1;
     try {
