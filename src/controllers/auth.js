@@ -81,10 +81,16 @@ export const loginUser = async (req, res, next) => {
     const {email, password} = req.body;
     const userDoc = await UserModel.findOne({email});
     console.log(userDoc)
+    if(!userDoc) {
+        res.status(401).json('Wrong credentials!');
+    }
     const ctr = userDoc.counter + 1;
     try {
         const passwOk = bcrypt.compareSync(password, userDoc.password);
         if(passwOk) {
+            if(!userDoc.accepted) {
+                res.status(403).json('User is not accepted by admin!');
+            }
             await UserModel.findOneAndUpdate({email}, {lastVisit: new Date()});
             await UserModel.findOneAndUpdate({email}, {counter: ctr});
             res.json(Object.assign(generateTokens(req, userDoc), { 'roles': userDoc.roles, 'counter': userDoc.counter + 1, 'lastVisit': userDoc.lastVisit }));
