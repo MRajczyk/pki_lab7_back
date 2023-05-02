@@ -90,6 +90,7 @@ export const loginUser = async (req, res, next) => {
         if(passwOk) {
             if(!userDoc.accepted) {
                 res.status(403).json('User is not accepted by admin!');
+                return;
             }
             await UserModel.findOneAndUpdate({email}, {lastVisit: new Date()});
             await UserModel.findOneAndUpdate({email}, {counter: ctr});
