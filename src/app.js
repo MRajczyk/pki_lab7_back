@@ -9,7 +9,7 @@ import { initializeData } from './seed/data-seeder.js'
 const URI_MONGO = process.env.URI_MONGO;
 const PORT_LISTEN = process.env.PORT_LISTEN;
 // Initialize app 
-const app = express(); 
+const app = express();
 
 app.use(cors()); 
 app.use(bodyParser.json()) 
@@ -18,10 +18,11 @@ app.get('/', (req, res) => {
   res.json({app: 'Run app auth'}); 
 }); 
 
-// Connect to MongoDB 
+// Connect to MongoDB
+console.log("Connecting to database...");
 mongoose.connect(URI_MONGO, {
   useNewUrlParser: true
-}).catch(err => console.log('Error: Could not connect to MongoDB.', err)); 
+}).catch(err => console.log('Error: Could not connect to MongoDB.', err));
 
 mongoose.connection.on('connected', () => {
   initializeUser().then((err) => {
